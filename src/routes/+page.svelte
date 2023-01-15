@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { formatPrompt, toDialogueStructs } from '$lib';
 	import { onMount } from 'svelte';
+	import { writable } from 'svelte/store';
 	import type { ActionData } from './$types';
 	export let form: ActionData;
 
@@ -20,34 +22,14 @@
 		};
 	});
 
-	const prelude =
-		'The following is a conversation between you and an AI assistant named Al. Al is helpful, creative, clever, and very friendly.';
-
-	let dialogue: string[] = [];
-
-	function formatPrompt(dialogue: string[]) {
-		type TwoAtMost = [string] | [string, string];
-		let result: TwoAtMost[] = [];
-		for (let i = 0; i < dialogue.length; i += 2) {
-			let chunk = dialogue.slice(i, i + 2) as TwoAtMost;
-			result.push(chunk);
-		}
-
-		let newPrompt = result
-			.map(([you, al]) => {
-				if (al) {
-					return `You: ${you}\n\nAl: ${al}`;
-				}
-				return `You: ${you}\n\nAl:`;
-			})
-			.join('\n\n');
-
-		return `${prelude}\n\n${newPrompt}`;
-	}
+	let dialogue = writable([] as string[]);
 
 	$: {
 		if (form?.reply) {
-			dialogue.push(form.reply);
+			dialogue.update((d) => {
+				d.push(form!.reply!);
+				return d;
+			});
 			speechSynthesis.speak(new SpeechSynthesisUtterance(form.reply));
 		}
 	}
@@ -55,14 +37,28 @@
 
 <h1>Welcome to Alvitr or Allvis (wip)</h1>
 <main>
+	<ul>
+		{#each toDialogueStructs($dialogue) as ds}
+			<li>
+				You: {ds.you}
+			</li>
+			{#if ds.al}
+				<li>Al: {ds.al}</li>
+			{/if}
+		{/each}
+	</ul>
+
 	<button on:click={() => recognition.start()}>Start</button>
 	<button on:click={() => recognition.stop()}>Stop</button>
 
 	<form
 		method="post"
 		use:enhance={({ data }) => {
-			dialogue.push(latestInput);
-			data.set('prompt', formatPrompt(dialogue));
+			dialogue.update((d) => {
+				d.push(latestInput);
+				return d;
+			});
+			data.set('prompt', formatPrompt($dialogue));
 			return async ({ update }) => {
 				update();
 			};
