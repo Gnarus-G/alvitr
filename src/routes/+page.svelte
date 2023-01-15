@@ -48,6 +48,7 @@
 	$: {
 		if (form?.reply) {
 			dialogue.push(form.reply);
+			speechSynthesis.speak(new SpeechSynthesisUtterance(form.reply));
 		}
 	}
 </script>
