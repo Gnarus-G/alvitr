@@ -40,16 +40,16 @@
 	<title>Alvitr</title>
 </svelte:head>
 
-<div class="max-w-md h-full flex flex-col items-center mx-auto">
-	<ul class="flex flex-col flex-grow w-full overflow-y-auto">
+<div class="max-w-md h-full flex flex-col items-center mx-auto p-5">
+	<ul class="flex flex-col flex-grow w-full overflow-y-auto gap-5">
 		{#each toDialogueStructs($dialogue) as ds}
-			<li class="ml-auto p-5">
+			<li class="ml-auto">
 				<p class="w-[200px] bg-cyan-900 rounded-l-lg rounded-br-lg p-5">
 					{ds.you}
 				</p>
 			</li>
 			{#if ds.al}
-				<li class="mr-auto p-5">
+				<li class="mr-auto">
 					<p class="w-[200px] bg-violet-900 rounded-r-lg rounded-bl-lg p-5">
 						{ds.al}
 					</p>
@@ -59,7 +59,7 @@
 	</ul>
 
 	<form
-		class="mb-5 w-full"
+		class="w-full"
 		method="post"
 		use:enhance={({ data }) => {
 			dialogue.update((d) => {
@@ -81,9 +81,9 @@
 			bind:value={latestInput}
 			rows="3"
 		/>
-		<div class="flex justify-between mt-5">
+		<div class="flex justify-between mt-2">
 			<button
-				class="bg-cyan-600 rounded-sm p-2 flex items-center gap-1 
+				class="bg-cyan-600 rounded-md p-2 px-3 flex items-center gap-1 
         hover:bg-cyan-700 focus:outline-none focus:ring 
         focus:ring-cyan-900"
 				type="button"
@@ -93,8 +93,8 @@
 				Listen</button
 			>
 			<button
-				class="flex items-center bg-violet-600 
-        hover:bg-violet-700 rounded-sm p-2 gap-1 
+				class="flex items-center bg-violet-600 px-3 
+        hover:bg-violet-700 rounded-md p-2 gap-1 
         focus:ring focus:outline-none
         focus:ring-violet-900"><PaperPlane slot="leftIcon" /> Submit</button
 			>
