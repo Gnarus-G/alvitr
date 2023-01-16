@@ -8,7 +8,7 @@
 	export let form: ActionData;
 
 	let recognition: SpeechRecognition;
-
+	let voice: SpeechSynthesisVoice;
 	let latestInput = '';
 
 	onMount(() => {
@@ -21,6 +21,9 @@
 		recognition.onresult = (event) => {
 			latestInput = event.results[event.results.length - 1][0].transcript;
 		};
+
+		voice = speechSynthesis.getVoices().find((v) => v.name.includes('Male'))!;
+		console.log({ voice });
 	});
 
 	let dialogue = writable([] as string[]);
@@ -31,7 +34,9 @@
 				d.push(form!.reply!);
 				return d;
 			});
-			speechSynthesis.speak(new SpeechSynthesisUtterance(form.reply));
+			const utterance = new SpeechSynthesisUtterance(form.reply);
+			utterance.voice = voice;
+			speechSynthesis.speak(utterance);
 		}
 	}
 </script>
