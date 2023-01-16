@@ -37,11 +37,6 @@
 
 	onMount(() => {
 		function scrollToBottom() {
-			console.log(chatWin.scrollHeight);
-			/* chatWin.scrollTop = chatWin.scrollHeight; */
-			console.log(chatWin.children);
-
-			/* chatWin.scrollTo(0, chatWin.scrollHeight); */
 			chatWin.children.item(chatWin.children.length - 1)?.scrollIntoView({
 				behavior: 'smooth'
 			});
