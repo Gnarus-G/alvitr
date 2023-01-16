@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Box, Button, Center, Container, Group, TextInput } from '@svelteuidev/core';
+	import { PaperPlane, Stop } from 'radix-icons-svelte';
 	import { enhance } from '$app/forms';
 	import { formatPrompt, toDialogueStructs } from '$lib';
 	import { onMount } from 'svelte';
@@ -38,7 +40,11 @@
 <svelte:head>
 	<title>Alvitr</title>
 </svelte:head>
-<main>
+
+<Container
+	size="xs"
+	override={{ height: '100vh', display: 'flex', flexDirection: 'column', ai: 'center' }}
+>
 	<ul>
 		{#each toDialogueStructs($dialogue) as ds}
 			<li>
@@ -50,30 +56,30 @@
 		{/each}
 	</ul>
 
-	<button on:click={() => recognition.start()}>Start</button>
-	<button on:click={() => recognition.stop()}>Stop</button>
-
-	<form
-		method="post"
-		use:enhance={({ data }) => {
-			dialogue.update((d) => {
-				d.push(latestInput);
-				return d;
-			});
-			data.set('prompt', formatPrompt($dialogue));
-			return async ({ update }) => {
-				update();
-			};
-		}}
-	>
-		<label>
-			Ask
-			<textarea name="input" bind:value={latestInput} />
-		</label>
-		<button>Submit</button>
-	</form>
-
-	{#if form?.reply}
-		<p>{form.reply}</p>
-	{/if}
-</main>
+	<Box css={{ position: 'absolute', bottom: '$10' }}>
+		<Center>
+			<form
+				method="post"
+				use:enhance={({ data }) => {
+					dialogue.update((d) => {
+						d.push(latestInput);
+						return d;
+					});
+					data.set('prompt', formatPrompt($dialogue));
+					return async ({ update }) => {
+						update();
+					};
+				}}
+			>
+				<TextInput placeholder="What's on your mind?" bind:value={latestInput} multiline />
+				<Group position="apart" mt="xs">
+					<Button color="cyan" on:click={() => recognition.start()}>
+						<Stop slot="leftIcon" />
+						Listen</Button
+					>
+					<Button color="grape"><PaperPlane slot="leftIcon" /> Submit</Button>
+				</Group>
+			</form>
+		</Center>
+	</Box>
+</Container>
