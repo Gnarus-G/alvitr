@@ -11,6 +11,8 @@
 	let voice: SpeechSynthesisVoice;
 	let latestInput = '';
 
+	let chatWin: HTMLUListElement;
+
 	onMount(() => {
 		recognition = new webkitSpeechRecognition();
 		recognition.continuous = true;
@@ -26,6 +28,21 @@
 		console.log({ voice });
 	});
 
+	onMount(() => {
+		function scrollToBottom() {
+			console.log(chatWin.scrollHeight);
+			/* chatWin.scrollTop = chatWin.scrollHeight; */
+			console.log(chatWin.children);
+
+			/* chatWin.scrollTo(0, chatWin.scrollHeight); */
+			chatWin.children.item(chatWin.children.length - 1)?.scrollIntoView({
+				behavior: 'smooth'
+			});
+		}
+
+		new MutationObserver(() => scrollToBottom()).observe(chatWin, { childList: true });
+	});
+
 	let dialogue = writable([] as string[]);
 
 	$: {
@@ -34,6 +51,7 @@
 				d.push(form!.reply!);
 				return d;
 			});
+
 			const utterance = new SpeechSynthesisUtterance(form.reply);
 			utterance.voice = voice;
 			speechSynthesis.speak(utterance);
@@ -46,7 +64,7 @@
 </svelte:head>
 
 <div class="max-w-md h-full flex flex-col items-center mx-auto p-5">
-	<ul class="flex flex-col flex-grow w-full overflow-y-auto gap-5">
+	<ul bind:this={chatWin} class="flex flex-col flex-grow w-full overflow-y-auto gap-5">
 		{#each toDialogueStructs($dialogue) as ds}
 			<li class="ml-auto">
 				<p class="w-[200px] bg-cyan-900 rounded-l-lg rounded-br-lg p-5">
