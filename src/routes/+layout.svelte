@@ -7,7 +7,8 @@
 </main>
 
 <style lang="postcss">
-	:global(html, body, main) {
+	:global(html, body),
+	main {
 		height: 100vh;
 	}
 </style>
