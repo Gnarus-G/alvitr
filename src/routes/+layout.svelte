@@ -1,16 +1,13 @@
 <script>
-	import { SvelteUIProvider } from '@svelteuidev/core';
 	import '../app.css';
 </script>
 
-<main>
-	<SvelteUIProvider withGlobalStyles themeObserver="dark" ssr>
-		<slot />
-	</SvelteUIProvider>
+<main class="bg-gray-900 text-gray-200">
+	<slot />
 </main>
 
-<style>
-	main {
+<style lang="postcss">
+	:global(html, body, main) {
 		height: 100vh;
 	}
 </style>
