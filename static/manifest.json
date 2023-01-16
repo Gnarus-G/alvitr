@@ -1,0 +1,19 @@
+{
+	"short_name": "Al",
+	"name": "Alvitr",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "logo_512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"background_color": "#22EFDA",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#C890C6",
+	"description": "Talk and to Al and get the answers to your burning questions.",
+	"version": "2",
+	"manifest_version": 2
+}
