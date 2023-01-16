@@ -35,7 +35,9 @@
 	}
 </script>
 
-<h1>Welcome to Alvitr or Allvis (wip)</h1>
+<svelte:head>
+	<title>Alvitr</title>
+</svelte:head>
 <main>
 	<ul>
 		{#each toDialogueStructs($dialogue) as ds}
