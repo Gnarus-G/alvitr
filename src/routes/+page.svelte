@@ -23,9 +23,16 @@
 		recognition.onresult = (event) => {
 			latestInput = event.results[event.results.length - 1][0].transcript;
 		};
+	});
 
-		voice = speechSynthesis.getVoices().find((v) => v.name.includes('Male'))!;
-		console.log({ voice });
+	function pickVoice() {
+		const voices = speechSynthesis.getVoices();
+		voice = voices.find((v) => v.name.includes('Male'))!;
+		console.log({ voice, voices });
+	}
+
+	onMount(() => {
+		speechSynthesis.onvoiceschanged = () => pickVoice();
 	});
 
 	onMount(() => {
