@@ -101,14 +101,13 @@
 			};
 		}}
 	>
-		<textarea
+		<input
 			class="mt-1 px-3 py-2 bg-gray-800 shadow-sm 
       border-slate-500 border-2 placeholder-slate-400 focus:outline-none 
       focus:border-violet-500 focus:ring-violet-500 block w-full rounded-lg 
       sm:text-sm focus:ring-1 resize-none"
 			placeholder="What's on your mind?"
 			bind:value={latestInput}
-			rows="3"
 		/>
 		<div class="flex justify-between mt-2">
 			<button
