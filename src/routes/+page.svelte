@@ -66,7 +66,11 @@
 </svelte:head>
 
 <div class="max-w-md h-full flex flex-col items-center mx-auto p-5">
-	<ul bind:this={chatWin} class="flex flex-col flex-grow w-full overflow-y-auto gap-5">
+	<ul
+		bind:this={chatWin}
+		class="flex flex-col flex-grow w-full overflow-y-auto gap-5 
+    scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-gray-700 scrollbar-track-gray-900"
+	>
 		{#each toDialogueStructs($dialogue) as ds}
 			<li class="ml-auto">
 				<p class="w-[200px] bg-cyan-900 rounded-l-lg rounded-br-lg p-5">
