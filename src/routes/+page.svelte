@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PaperPlane, Stop } from 'radix-icons-svelte';
+	import { PaperPlane, Pause, Stop } from 'radix-icons-svelte';
 	import { enhance } from '$app/forms';
 	import { formatPrompt, toDialogueStructs } from '$lib';
 	import { onMount } from 'svelte';
@@ -8,6 +8,7 @@
 	export let form: ActionData;
 
 	let recognition: SpeechRecognition;
+	let isListening = false;
 	let voice: SpeechSynthesisVoice;
 	let latestInput = '';
 
@@ -20,10 +21,24 @@
 		recognition.interimResults = false;
 		recognition.maxAlternatives = 1;
 
+		recognition.onstart = () => {
+			isListening = true;
+		};
+		recognition.onspeechend = () => {
+			isListening = false;
+		};
+
 		recognition.onresult = (event) => {
 			latestInput = event.results[event.results.length - 1][0].transcript;
 		};
 	});
+
+	function toggleSpeechRecognition() {
+		if (isListening) {
+			return recognition.stop();
+		}
+		return recognition.start();
+	}
 
 	function pickVoice() {
 		const voices = speechSynthesis.getVoices();
@@ -115,9 +130,13 @@
         hover:bg-cyan-700 focus:outline-none focus:ring 
         focus:ring-cyan-900"
 				type="button"
-				on:click={() => recognition.start()}
+				on:click={toggleSpeechRecognition}
 			>
-				<Stop slot="leftIcon" />
+				{#if isListening}
+					<Pause slot="leftIcon" />
+				{:else}
+					<Stop slot="leftIcon" />
+				{/if}
 				Listen</button
 			>
 			<button
