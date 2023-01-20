@@ -143,8 +143,9 @@
 				class="flex items-center bg-violet-600 px-3 
         hover:bg-violet-700 rounded-md p-2 gap-1 
         focus:ring focus:outline-none
-        focus:ring-violet-900"><PaperPlane slot="leftIcon" /> Submit</button
-			>
+        focus:ring-violet-900"
+				>Submit <PaperPlane slot="leftIcon" />
+			</button>
 		</div>
 	</form>
 </div>
